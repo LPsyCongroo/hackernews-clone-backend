@@ -1,0 +1,14 @@
+# Main Config file for Prisma database service
+
+# The service name, this will be part of the endpoint of the Prisma API
+service: hackernews-node
+
+# The deployment stage, this will also be part of the API endpoint - can be any string but usually dev, staging, or prod
+stage: dev
+
+# Points to the file that holds your data model
+datamodel: datamodel.graphql
+
+# You can only access the API when providing JWTs that are signed with this secret
+secret: supahSecretDontTellNodbody
+cluster: public-lasershield-944/prisma-us1

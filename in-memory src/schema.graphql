@@ -1,0 +1,21 @@
+type Query {
+  info: String!
+  feed: [Link!]!
+  
+  # The returned Link is not required as it may not find one with a matching ID
+  link(id: ID!): Link
+}
+
+type Mutation {
+  post(url: String!, description: String!): Link!
+
+  # The returned is not required as it may not find a match.
+  update(id: ID!, url: String, description: String): Link
+  delete(id:ID!): Link
+}
+
+type Link {
+  id: ID!
+  description: String!
+  url: String!
+}
