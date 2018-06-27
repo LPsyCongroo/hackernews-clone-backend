@@ -1,6 +1,6 @@
 const { GraphQLServer } = require('graphql-yoga');
 
-const links = [{
+let links = [{
   id: 'link-0',
   url: 'ali-r.com',
   description: 'My portfolio',
@@ -12,9 +12,14 @@ const resolvers = {
   Query: {
     info: () => 'This is the API of a Hackernews Clone',
     feed: () => links,
+    link: (_, args) => links.reduce((result, currentLink) => (
+      currentLink.id === args.id
+        ? currentLink
+        : result
+    ), null),
   },
 
-  // Can be omitted since resolver is trivial and the server can infer what it looks like.
+  // Can be omitted since resolver is trivial and the server can infer what the Link object looks like.
   Link: {
     id: root => root.id,
     description: root => root.description,
@@ -30,6 +35,25 @@ const resolvers = {
       };
       links.push(link);
       return link;
+    },
+    update: (_, args) => {
+      // Get Link
+      const link = links.reduce((result, currentLink) => (
+        currentLink.id === args.id
+          ? currentLink
+          : result
+      ), null);
+
+      // Mutate and return Link
+      return Object.assign(link, args);
+    },
+    delete: (_, args) => {
+      let deletedLink = null;
+      links = links.filter((link) => {
+        if (link.id === args.id) { deletedLink = link; }
+        return link.id !== args.id;
+      });
+      return deletedLink;
     },
   },
 };
